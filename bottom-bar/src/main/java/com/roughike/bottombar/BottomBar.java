@@ -50,6 +50,8 @@ import java.util.List;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * Modifications copyright (C) 2016 Lovoo Gmbh/Milosz Moczkowski
  */
 public class BottomBar extends LinearLayout implements View.OnClickListener, View.OnLongClickListener {
     private static final String STATE_CURRENT_SELECTED_TAB = "STATE_CURRENT_SELECTED_TAB";
@@ -111,7 +113,10 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     public BottomBar(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
-        setItems(tabXmlResource);
+
+        if(tabXmlResource != 0) {
+            setItems(tabXmlResource);
+        }
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -241,6 +246,19 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
         TabParser parser = new TabParser(getContext(), defaultTabConfig, xmlRes);
         updateItems(parser.getTabs());
+    }
+
+    public void setItems(final List<BottomBarTab> bottomBarItems) {
+
+        int index = 0;
+
+        for(BottomBarTab tab : bottomBarItems) {
+            tab.setConfig(getTabConfig());
+            tab.setIndexInContainer(index);
+            ++index;
+        }
+
+        updateItems(bottomBarItems);
     }
 
     private BottomBarTab.Config getTabConfig() {

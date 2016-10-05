@@ -72,7 +72,7 @@ public class BottomBarTab extends LinearLayout {
         FIXED, SHIFTING, TABLET
     }
 
-    BottomBarTab(Context context) {
+    public BottomBarTab(Context context) {
         super(context);
 
         sixDps = MiscUtils.dpToPixel(context, 6);
@@ -170,15 +170,15 @@ public class BottomBarTab extends LinearLayout {
         return iconView;
     }
 
-    int getIconResId() {
+    public int getIconResId() {
         return iconResId;
     }
 
-    void setIconResId(int iconResId) {
+    public void setIconResId(int iconResId) {
         this.iconResId = iconResId;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -186,7 +186,7 @@ public class BottomBarTab extends LinearLayout {
         return titleView;
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
