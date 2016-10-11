@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.annotation.XmlRes;
@@ -31,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -254,6 +256,29 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
                 .build();
     }
 
+    @Override
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
+        super.onVisibilityChanged(changedView, visibility);
+
+        boolean someViewsGone = false;
+        List<BottomBarTab> visibleTabs = new ArrayList<>();
+        int tabIndex = 0;
+        for (int i = 0; i < getTabCount(); i++) {
+            BottomBarTab currentTab = getTabAtPosition(i);
+            currentTab.setIndexInContainer(tabIndex);
+            visibleTabs.add(currentTab);
+            tabIndex++;
+
+            if (currentTab.getVisibility() == GONE && !someViewsGone) {
+                someViewsGone = true;
+            }
+        }
+        if (someViewsGone) {
+            tabContainer.removeAllViews();
+            updateItems(visibleTabs);
+        }
+    }
+
     private void updateItems(final List<BottomBarTab> bottomBarItems) {
         int index = 0;
         int biggestWidth = 0;
@@ -303,8 +328,16 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     private void resizeTabsToCorrectSizes(List<BottomBarTab> bottomBarItems, BottomBarTab[] viewsToAdd) {
+        int visibleTabs = 0;
+        for (int i = 0; i < bottomBarItems.size(); i++) {
+            BottomBarTab currentTab = bottomBarItems.get(i);
+            if (currentTab.getVisibility() == VISIBLE) {
+                visibleTabs += 1;
+            }
+        }
+
         int proposedItemWidth = Math.min(
-                MiscUtils.dpToPixel(getContext(), screenWidth / bottomBarItems.size()),
+                MiscUtils.dpToPixel(getContext(), screenWidth / visibleTabs),
                 maxFixedItemWidth
         );
 
@@ -390,6 +423,11 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
      * @param position the position to select.
      */
     public void selectTabAtPosition(int position) {
+        if (position > getTabCount() - 1 || position < 0) {
+            throw new IndexOutOfBoundsException("Can't select tab at position " +
+                    position + ". This BottomBar has no items at that position.");
+        }
+
         selectTabAtPosition(position, false);
     }
 
@@ -722,7 +760,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         BottomBarTab currentTab = getCurrentTab();
         if (currentTab != null && currentTab.isActive()) {
             currentTab.deselect(animate);
-            currentTab.updateWidth(inActiveShiftingItemWidth, animate);
             currentTabPosition = POSITION_UNSELECT;
         }
     }
