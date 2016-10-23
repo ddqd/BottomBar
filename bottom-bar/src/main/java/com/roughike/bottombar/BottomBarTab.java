@@ -55,6 +55,8 @@ public class BottomBarTab extends LinearLayout {
     private int barColorWhenSelected;
     private int badgeBackgroundColor;
 
+    private boolean hideBadgeOnSelect = false;
+
     private AppCompatImageView iconView;
     private TextView titleView;
     private boolean isActive;
@@ -360,7 +362,8 @@ public class BottomBarTab extends LinearLayout {
             setAlphas(activeAlpha);
         }
 
-        if (badge != null) {
+
+        if (hideBadgeOnSelect && hasActiveBadge()) {
             badge.hide();
         }
     }
