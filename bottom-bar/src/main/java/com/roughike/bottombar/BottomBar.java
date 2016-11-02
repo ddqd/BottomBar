@@ -705,11 +705,12 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         BottomBarTab oldTab = getCurrentTab();
         BottomBarTab newTab = getTabAtPosition(position);
 
-        oldTab.deselect(animate);
+        if(oldTab != null) {
+            oldTab.deselect(animate);
+            shiftingMagic(oldTab, newTab, animate);
+        }
         newTab.select(animate);
-
         updateSelectedTab(position);
-        shiftingMagic(oldTab, newTab, animate);
         handleBackgroundColorChange(newTab, false);
     }
 
