@@ -2,6 +2,14 @@
 
 (or: y u no add shiny new things?!)
 
+### 2.1
+
+* Add unselect method
+* Travis updates
+* Ignore .idea folder, update build tools version
+* Disable hiding badge on tab select", 2016-10-23
+* Makes animated tab select method public, 2016-08-29
+
 ### 2.0.2
 
 * Now we're animating the color change on tab titles and icons.
