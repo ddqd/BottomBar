@@ -60,6 +60,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private static final int BEHAVIOR_SHY = 2;
     private static final int BEHAVIOR_DRAW_UNDER_NAV = 4;
 
+    private static final int POSITION_UNSELECT = -1;
+
     private int primaryColor;
     private int screenWidth;
     private int tenDp;
@@ -420,6 +422,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
      */
     @IdRes
     public int getCurrentTabId() {
+        if (getCurrentTab() == null)
+            return POSITION_UNSELECT;
         return getCurrentTab().getId();
     }
 
@@ -671,11 +675,11 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private void handleClick(View v) {
         BottomBarTab oldTab = getCurrentTab();
         BottomBarTab newTab = (BottomBarTab) v;
-
-        oldTab.deselect(true);
+        if (oldTab != null) {
+            oldTab.deselect(true);
+            shiftingMagic(oldTab, newTab, true);
+        }
         newTab.select(true);
-
-        shiftingMagic(oldTab, newTab, true);
         handleBackgroundColorChange(newTab, true);
         updateSelectedTab(newTab.getIndexInTabContainer());
     }
@@ -718,25 +722,19 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         if (currentTab != null && currentTab.isActive()) {
             currentTab.deselect(animate);
             currentTab.updateWidth(inActiveShiftingItemWidth, animate);
-            updateSelectedTab(findPositionForTabWithId(currentTab.getId()), false);
+            currentTabPosition = POSITION_UNSELECT;
         }
     }
 
     private void updateSelectedTab(int newPosition) {
-        updateSelectedTab(newPosition, true);
-    }
-
-    private void updateSelectedTab(int newPosition, boolean isUpdateListeners) {
         int newTabId = getTabAtPosition(newPosition).getId();
 
-        if (isUpdateListeners) {
-            if (newPosition != currentTabPosition) {
-                if (onTabSelectListener != null) {
-                    onTabSelectListener.onTabSelected(newTabId);
-                }
-            } else if (onTabReselectListener != null && !ignoreTabReselectionListener) {
-                onTabReselectListener.onTabReSelected(newTabId);
+        if (newPosition != currentTabPosition) {
+            if (onTabSelectListener != null) {
+                onTabSelectListener.onTabSelected(newTabId);
             }
+        } else if (onTabReselectListener != null && !ignoreTabReselectionListener) {
+            onTabReselectListener.onTabReSelected(newTabId);
         }
 
         currentTabPosition = newPosition;
