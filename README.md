@@ -1,10 +1,13 @@
 # BottomBar
 
-[![Build Status](https://travis-ci.org/roughike/BottomBar.svg?branch=master)](https://travis-ci.org/roughike/BottomBar) [![Coverage Status](https://coveralls.io/repos/github/roughike/BottomBar/badge.svg?branch=development)](https://coveralls.io/github/roughike/BottomBar?branch=master)
+[![Build Status](https://travis-ci.org/ddqd/BottomBar.svg?branch=master)](https://travis-ci.org/ddqd/BottomBar)
+
 
 <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/shy-demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/shifting-demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/screenshot_tablet.png" width="33%" />
 
-## Version 2.0 released!
+## Fork Version 2.1 released!
+
+[Jitpack](https://jitpack.io/#ddqd/BottomBar/2.1.0)
 
 [The latest version before that can be found in the v1 branch](https://github.com/roughike/BottomBar/tree/v1)
 
@@ -31,17 +34,16 @@ Your uncle Bob's Galaxy S Mini will probably be supported in the future though.
 ## Gimme that Gradle sweetness, pls?
 
 ```groovy
-compile 'com.roughike:bottom-bar:2.0.2'
+  compile 'com.github.ddqd:BottomBar:2.1.0'
 ```
 
 **Maven:**
 ```xml
-<dependency>
-  <groupId>com.roughike</groupId>
-  <artifactId>bottom-bar</artifactId>
-  <version>2.0.2</version>
-  <type>pom</type>
-</dependency>
+	<dependency>
+	    <groupId>com.github.ddqd</groupId>
+	    <artifactId>BottomBar</artifactId>
+	    <version>2.1.0</version>
+	</dependency>
 ```
 
 ## How?
