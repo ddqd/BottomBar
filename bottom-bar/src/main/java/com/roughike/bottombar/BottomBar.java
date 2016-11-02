@@ -709,15 +709,34 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         handleBackgroundColorChange(newTab, false);
     }
 
+    public void unselect() {
+        unselect(true);
+    }
+
+    public void unselect(boolean animate) {
+        BottomBarTab currentTab = getCurrentTab();
+        if (currentTab != null && currentTab.isActive()) {
+            currentTab.deselect(animate);
+            currentTab.updateWidth(inActiveShiftingItemWidth, animate);
+            updateSelectedTab(findPositionForTabWithId(currentTab.getId()), false);
+        }
+    }
+
     private void updateSelectedTab(int newPosition) {
+        updateSelectedTab(newPosition, true);
+    }
+
+    private void updateSelectedTab(int newPosition, boolean isUpdateListeners) {
         int newTabId = getTabAtPosition(newPosition).getId();
 
-        if (newPosition != currentTabPosition) {
-            if (onTabSelectListener != null) {
-                onTabSelectListener.onTabSelected(newTabId);
+        if (isUpdateListeners) {
+            if (newPosition != currentTabPosition) {
+                if (onTabSelectListener != null) {
+                    onTabSelectListener.onTabSelected(newTabId);
+                }
+            } else if (onTabReselectListener != null && !ignoreTabReselectionListener) {
+                onTabReselectListener.onTabReSelected(newTabId);
             }
-        } else if (onTabReselectListener != null && !ignoreTabReselectionListener) {
-            onTabReselectListener.onTabReSelected(newTabId);
         }
 
         currentTabPosition = newPosition;
@@ -726,6 +745,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
             ignoreTabReselectionListener = false;
         }
     }
+
+
 
     private void shiftingMagic(BottomBarTab oldTab, BottomBarTab newTab, boolean animate) {
         if (isShiftingMode()) {
