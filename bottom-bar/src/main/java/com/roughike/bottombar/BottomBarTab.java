@@ -145,7 +145,7 @@ public class BottomBarTab extends LinearLayout {
             titleView.setTextAppearance(getContext(), titleTextAppearanceResId);
         }
 
-        titleView.setTag(titleTextAppearanceResId);
+        titleView.setTag(R.id.bb_bottom_bar_appearance_id, titleTextAppearanceResId);
     }
 
     private void updateCustomTypeface() {
@@ -259,10 +259,10 @@ public class BottomBarTab extends LinearLayout {
     }
 
     int getCurrentDisplayedIconColor() {
-        Object tag = iconView.getTag();
+        Object tag = iconView.getTag(R.id.bb_bottom_bar_color_id);
 
         if (tag instanceof Integer) {
-            return (int) iconView.getTag();
+            return (int) tag;
         }
 
         return 0;
@@ -277,10 +277,10 @@ public class BottomBarTab extends LinearLayout {
     }
 
     int getCurrentDisplayedTextAppearance() {
-        Object tag = titleView.getTag();
+        Object tag = titleView.getTag(R.id.bb_bottom_bar_appearance_id);
 
         if (titleView != null && tag instanceof Integer) {
-            return (int) titleView.getTag();
+            return (int) tag;
         }
 
         return 0;
@@ -400,7 +400,7 @@ public class BottomBarTab extends LinearLayout {
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-               setColors((Integer) valueAnimator.getAnimatedValue());
+                setColors((Integer) valueAnimator.getAnimatedValue());
             }
         });
 
@@ -411,7 +411,7 @@ public class BottomBarTab extends LinearLayout {
     private void setColors(int color) {
         if (iconView != null) {
             iconView.setColorFilter(color);
-            iconView.setTag(color);
+            iconView.setTag(R.id.bb_bottom_bar_color_id, color);
         }
 
         if (titleView != null) {
