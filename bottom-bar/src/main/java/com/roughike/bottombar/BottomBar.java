@@ -746,8 +746,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         }
     }
 
-
-
     private void shiftingMagic(BottomBarTab oldTab, BottomBarTab newTab, boolean animate) {
         if (isShiftingMode()) {
             oldTab.updateWidth(inActiveShiftingItemWidth, animate);
