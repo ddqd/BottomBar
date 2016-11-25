@@ -10,6 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
@@ -45,7 +48,7 @@ public class BottomBarTab extends LinearLayout {
     private final int sixteenDps;
 
     private Type type = Type.FIXED;
-    private int iconResId;
+    private @DrawableRes int iconResId;
     private String title;
 
     private float inActiveAlpha;
@@ -78,6 +81,20 @@ public class BottomBarTab extends LinearLayout {
         sixDps = MiscUtils.dpToPixel(context, 6);
         eightDps = MiscUtils.dpToPixel(context, 8);
         sixteenDps = MiscUtils.dpToPixel(context, 16);
+    }
+
+    public BottomBarTab(Context context, String title, @DrawableRes int iconResId, @IdRes int id) {
+        this(context);
+        this.title = title;
+        this.iconResId = iconResId;
+        this.setId(id);
+    }
+
+    public BottomBarTab(Context context, @StringRes int titleRes, @DrawableRes int iconResId, @IdRes int id) {
+        this(context);
+        this.title = context.getString(titleRes);
+        this.iconResId = iconResId;
+        this.setId(id);
     }
 
     void setConfig(Config config) {
@@ -174,7 +191,7 @@ public class BottomBarTab extends LinearLayout {
         return iconResId;
     }
 
-    public void setIconResId(int iconResId) {
+    public void setIconResId(@DrawableRes int iconResId) {
         this.iconResId = iconResId;
     }
 

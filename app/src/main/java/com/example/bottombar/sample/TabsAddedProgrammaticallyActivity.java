@@ -40,11 +40,14 @@ public class TabsAddedProgrammaticallyActivity extends AppCompatActivity {
         tab4.setIconResId(R.drawable.ic_recents);
         tab4.setId(R.id.tab_recents);
 
+        BottomBarTab tab5 = new BottomBarTab(this, "Five", R.drawable.ic_restaurants, R.id.tab_food);
+
         List<BottomBarTab> tabList = new ArrayList<>();
         tabList.add(tab1);
         tabList.add(tab2);
         tabList.add(tab3);
         tabList.add(tab4);
+        tabList.add(tab5);
 
         bottomBar.setItems(tabList);
     }
