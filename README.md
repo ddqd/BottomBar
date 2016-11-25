@@ -5,9 +5,9 @@
 
 <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/shy-demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/shifting-demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/screenshot_tablet.png" width="33%" />
 
-## Fork Version 2.1 released!
+## Fork Version 2.1.4 released!
 
-[Jitpack](https://jitpack.io/#ddqd/BottomBar/2.1.0)
+[Jitpack](https://jitpack.io/#ddqd/BottomBar/2.1.4)
 
 [The latest version before that can be found in the v1 branch](https://github.com/roughike/BottomBar/tree/v1)
 
@@ -29,12 +29,12 @@ A custom view component that mimics the new [Material Design Bottom Navigation p
 
 Nope. The current minSDK version is **API level 11 (Honeycomb).**
 
-Your uncle Bob's Galaxy S Mini will probably be supported in the future though. 
+Your uncle Bob's Galaxy S Mini will probably be supported in the future though.
 
 ## Gimme that Gradle sweetness, pls?
 
 ```groovy
-  compile 'com.github.ddqd:BottomBar:2.1.0'
+  compile 'com.github.ddqd:BottomBar:2.1.4'
 ```
 
 **Maven:**
@@ -42,7 +42,7 @@ Your uncle Bob's Galaxy S Mini will probably be supported in the future though.
 	<dependency>
 	    <groupId>com.github.ddqd</groupId>
 	    <artifactId>BottomBar</artifactId>
-	    <version>2.1.0</version>
+	    <version>2.1.4</version>
 	</dependency>
 ```
 
@@ -77,6 +77,31 @@ Define your tabs in an XML resource file.
         icon="@drawable/ic_friends"
         title="Friends" />
 </tabs>
+```
+
+#OR
+
+### Adding items via code
+
+```
+BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+BottomBarTab tab1 = new BottomBarTab(this);
+tab1.setTitle("Fav");
+tab1.setIconResId(R.drawable.ic_favorites);
+tab1.setId(R.id.tab_favorites);
+```
+
+```
+BottomBarTab tab2 = new BottomBarTab(this, "Food", R.drawable.ic_restaurants, R.id.tab_food);
+```
+and update tabs:
+
+```
+List<BottomBarTab> tabList = new ArrayList<>();
+tabList.add(tab1);
+tabList.add(tab2);
+
+bottomBar.setItems(tabList);
 ```
 
 Then, add the BottomBar to your layout and give it a resource id for your tabs xml file.

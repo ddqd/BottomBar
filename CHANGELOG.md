@@ -2,6 +2,9 @@
 
 (or: y u no add shiny new things?!)
 
+### 2.1.4
+* Build bar items from code:   ``` bottomBar.setItems(tabList);```
+
 ### 2.1
 
 * Add unselect method
