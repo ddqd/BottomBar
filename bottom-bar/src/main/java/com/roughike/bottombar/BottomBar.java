@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private int screenWidth;
     private int tenDp;
     private int maxFixedItemWidth;
+    private int barHeight;
 
     // XML Attributes
     private int tabXmlResource;
@@ -153,6 +155,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
             titleTextAppearance = ta.getResourceId(R.styleable.BottomBar_bb_titleTextAppearance, 0);
             titleTypeFace = getTypeFaceFromAsset(ta.getString(R.styleable.BottomBar_bb_titleTypeFace));
             showShadow = ta.getBoolean(R.styleable.BottomBar_bb_showShadow, true);
+            barHeight = ta.getDimensionPixelSize(R.styleable.BottomBar_bb_default_height, ta.getDimensionPixelOffset(R.styleable.BottomBar_bb_default_height, getResources().getDimensionPixelOffset(R.dimen.bb_height)));
         } finally {
             ta.recycle();
         }
@@ -185,19 +188,23 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         return null;
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+        setMeasuredDimension(parentWidth, barHeight);
+    }
+
     private void initializeViews() {
         int width = isTabletMode ? LayoutParams.WRAP_CONTENT : LayoutParams.MATCH_PARENT;
-        int height = isTabletMode ? LayoutParams.MATCH_PARENT : LayoutParams.WRAP_CONTENT;
-        LayoutParams params = new LayoutParams(width, height);
+        LayoutParams params = new LayoutParams(width, barHeight);
 
         setLayoutParams(params);
         setOrientation(isTabletMode ? HORIZONTAL : VERTICAL);
         ViewCompat.setElevation(this, MiscUtils.dpToPixel(getContext(), 8));
 
-        View rootView = inflate(getContext(),
+        final View rootView = inflate(getContext(),
                 isTabletMode ? R.layout.bb_bottom_bar_item_container_tablet : R.layout.bb_bottom_bar_item_container, this);
-        rootView.setLayoutParams(params);
-
         backgroundOverlay = rootView.findViewById(R.id.bb_bottom_bar_background_overlay);
         outerContainer = (ViewGroup) rootView.findViewById(R.id.bb_bottom_bar_outer_container);
         tabContainer = (ViewGroup) rootView.findViewById(R.id.bb_bottom_bar_item_container);
@@ -206,6 +213,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         if (!showShadow) {
             shadowView.setVisibility(GONE);
         }
+        outerContainer.setLayoutParams(params);
     }
 
     private void determineInitialBackgroundColor() {
@@ -236,6 +244,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
      * for each tab.
      */
     public void setItems(@XmlRes int xmlRes, BottomBarTab.Config defaultTabConfig) {
+        tabContainer.removeAllViews();
         if (xmlRes == 0) {
             throw new RuntimeException("No items specified for the BottomBar!");
         }
@@ -249,7 +258,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     public void setItems(final List<BottomBarTab> bottomBarItems) {
-
+        tabContainer.removeAllViews();
         int index = 0;
 
         for(BottomBarTab tab : bottomBarItems) {
@@ -298,7 +307,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     private void updateItems(final List<BottomBarTab> bottomBarItems) {
-        tabContainer.removeAllViews();
         int index = 0;
         int biggestWidth = 0;
 
@@ -344,6 +352,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         if (!isTabletMode) {
             resizeTabsToCorrectSizes(bottomBarItems, viewsToAdd);
         }
+        updateTitleBottomPadding();
     }
 
     private void resizeTabsToCorrectSizes(List<BottomBarTab> bottomBarItems, BottomBarTab[] viewsToAdd) {

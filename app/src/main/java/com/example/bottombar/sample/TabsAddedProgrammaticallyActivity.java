@@ -3,6 +3,8 @@ package com.example.bottombar.sample;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarTab;
@@ -18,7 +20,9 @@ public class TabsAddedProgrammaticallyActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_tabs_added_programmatically);
 
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        Button updateBar = (Button) findViewById(R.id.button);
+
+        final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
 
         BottomBarTab tab1 = new BottomBarTab(this);
         tab1.setTitle("One");
@@ -42,13 +46,18 @@ public class TabsAddedProgrammaticallyActivity extends AppCompatActivity {
 
         BottomBarTab tab5 = new BottomBarTab(this, "Five", R.drawable.ic_restaurants, R.id.tab_food);
 
-        List<BottomBarTab> tabList = new ArrayList<>();
+        final List<BottomBarTab> tabList = new ArrayList<>();
         tabList.add(tab1);
         tabList.add(tab2);
         tabList.add(tab3);
         tabList.add(tab4);
         tabList.add(tab5);
 
-        bottomBar.setItems(tabList);
+        updateBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomBar.setItems(tabList);
+            }
+        });
     }
 }
