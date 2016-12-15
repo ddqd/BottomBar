@@ -298,6 +298,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     private void updateItems(final List<BottomBarTab> bottomBarItems) {
+        tabContainer.removeAllViews();
         int index = 0;
         int biggestWidth = 0;
 

@@ -30,9 +30,18 @@ public class BadgeActivity extends AppCompatActivity {
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
+                BottomBarTab tab = bottomBar.getTabWithId(tabId);
+                int count = 0;
+                if (tab.getTag() != null) {
+                    count = (int) tab.getTag();
+                }
+                count+=1;
+                tab.setTag(count);
+                tab.setBadgeCount(count);
                 messageView.setText(TabMessage.get(tabId, false));
             }
         });
+
 
         bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
@@ -51,5 +60,6 @@ public class BadgeActivity extends AppCompatActivity {
 
         BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_nearby);
         nearby.setBadgeCount(5);
+        nearby.setTag(5);
     }
 }
