@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -29,10 +30,11 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,13 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private static final String STATE_CURRENT_SELECTED_TAB = "STATE_CURRENT_SELECTED_TAB";
 
     private static final float DEFAULT_INACTIVE_SHIFTING_TAB_ALPHA = 0.6f;
+
+    static final int MODE_AUTO = 0;
+    static final int MODE_MANUAL = 1;
+
+    @IntDef({MODE_AUTO, MODE_MANUAL})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface BottomBarMODE {}
 
     // Behaviors
     private static final int BEHAVIOR_NONE = 0;
@@ -85,6 +94,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private int titleTextAppearance;
     private Typeface titleTypeFace;
     private boolean showShadow;
+    private int bottomBarMODE;
+
 
     private View backgroundOverlay;
     private ViewGroup outerContainer;
@@ -106,6 +117,16 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
     private boolean shyHeightAlreadyCalculated;
     private boolean navBarAccountedHeightCalculated;
+
+    public interface ClickHandler {
+        boolean handleClick(BottomBarTab tab);
+    }
+
+    public void setClickHandler(ClickHandler clickHandler) {
+        this.clickHandler = clickHandler;
+    }
+
+    private ClickHandler clickHandler;
 
     public BottomBar(Context context) {
         super(context);
@@ -156,9 +177,17 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
             titleTypeFace = getTypeFaceFromAsset(ta.getString(R.styleable.BottomBar_bb_titleTypeFace));
             showShadow = ta.getBoolean(R.styleable.BottomBar_bb_showShadow, true);
             barHeight = ta.getDimensionPixelSize(R.styleable.BottomBar_bb_default_height, ta.getDimensionPixelOffset(R.styleable.BottomBar_bb_default_height, getResources().getDimensionPixelOffset(R.dimen.bb_height)));
+            bottomBarMODE = ta.getInteger(R.styleable.BottomBar_bb_mode, MODE_AUTO);
+            if (bottomBarMODE == MODE_MANUAL) {
+                currentTabPosition = POSITION_UNSELECT;
+            }
         } finally {
             ta.recycle();
         }
+    }
+
+    public void setBottomBarMODE(int bottomBarMODE) {
+        this.bottomBarMODE = bottomBarMODE;
     }
 
     private boolean isShiftingMode() {
@@ -199,7 +228,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         int width = isTabletMode ? LayoutParams.WRAP_CONTENT : LayoutParams.MATCH_PARENT;
         LayoutParams params = new LayoutParams(width, barHeight);
 
-        setLayoutParams(params);
         setOrientation(isTabletMode ? HORIZONTAL : VERTICAL);
         ViewCompat.setElevation(this, MiscUtils.dpToPixel(getContext(), 8));
 
@@ -214,6 +242,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
             shadowView.setVisibility(GONE);
         }
         outerContainer.setLayoutParams(params);
+        setLayoutParams(params);
+
     }
 
     private void determineInitialBackgroundColor() {
@@ -229,6 +259,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         if (userHasDefinedBackgroundColor) {
             defaultBackgroundColor = ((ColorDrawable) userDefinedBackground).getColor();
             setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            setBackgroundColor(defaultBackgroundColor);
         }
     }
 
@@ -268,6 +300,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         }
 
         updateItems(bottomBarItems);
+        updateTitleBottomPadding();
     }
 
     private BottomBarTab.Config getTabConfig() {
@@ -326,10 +359,13 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
             bottomBarTab.setType(type);
             bottomBarTab.prepareLayout();
 
-            if (index == currentTabPosition) {
-                bottomBarTab.select(false);
-
-                handleBackgroundColorChange(bottomBarTab, false);
+            if (bottomBarMODE == MODE_AUTO) {
+                if (index == currentTabPosition) {
+                    bottomBarTab.select(false);
+                    handleBackgroundColorChange(bottomBarTab, false);
+                } else {
+                    bottomBarTab.deselect(false);
+                }
             } else {
                 bottomBarTab.deselect(false);
             }
@@ -352,7 +388,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         if (!isTabletMode) {
             resizeTabsToCorrectSizes(bottomBarItems, viewsToAdd);
         }
-        updateTitleBottomPadding();
     }
 
     private void resizeTabsToCorrectSizes(List<BottomBarTab> bottomBarItems, BottomBarTab[] viewsToAdd) {
@@ -401,10 +436,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
      */
     public void setOnTabSelectListener(@Nullable OnTabSelectListener listener) {
         onTabSelectListener = listener;
-
-        if (onTabSelectListener != null && getTabCount() > 0) {
-            listener.onTabSelected(getCurrentTabId());
-        }
     }
 
     /**
@@ -718,7 +749,14 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
     @Override
     public void onClick(View v) {
-        handleClick(v);
+        if (clickHandler == null) {
+            handleClick(v);
+        } else {
+            if (clickHandler.handleClick((BottomBarTab) v)) {
+                handleClick(v);
+            }
+
+        }
     }
 
     @Override
@@ -819,10 +857,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
     private void handleBackgroundColorChange(BottomBarTab tab, boolean animate) {
         int newColor = tab.getBarColorWhenSelected();
-
-        if (currentBackgroundColor == newColor) {
-            return;
-        }
 
         if (!animate) {
             outerContainer.setBackgroundColor(newColor);

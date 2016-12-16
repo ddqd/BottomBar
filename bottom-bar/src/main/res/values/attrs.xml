@@ -17,5 +17,9 @@
         <attr name="bb_titleTypeFace" format="string" />
         <attr name="bb_showShadow" format="boolean" />
         <attr name="bb_default_height" format="dimension"/>
+        <attr name="bb_mode">
+            <flag name="auto" value="1"/>
+            <flag name="manual" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

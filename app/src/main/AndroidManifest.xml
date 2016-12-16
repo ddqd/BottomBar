@@ -23,6 +23,7 @@
         <activity android:name=".BadgeActivity" />
         <activity android:name=".CustomColorAndFontActivity" />
         <activity android:name=".TabsAddedProgrammaticallyActivity" />
+        <activity android:name=".ManualBarActivity"/>
     </application>
 
 </manifest>
