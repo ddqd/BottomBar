@@ -53,10 +53,26 @@ public class TabsAddedProgrammaticallyActivity extends AppCompatActivity {
         tabList.add(tab4);
         tabList.add(tab5);
 
+        bottomBar.setItems(tabList);
+        bottomBar.setTag(tabList);
+
+        final List<BottomBarTab> tabList1 = new ArrayList<>();
+        tabList1.add(tab5);
+        tabList1.add(tab4);
+        tabList1.add(tab3);
+        tabList1.add(tab2);
+        tabList1.add(tab1);
+
         updateBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bottomBar.setItems(tabList);
+                if (bottomBar.getTag().equals(tabList)) {
+                    bottomBar.setItems(tabList1);
+                    bottomBar.setTag(tabList1);
+                } else {
+                    bottomBar.setItems(tabList);
+                    bottomBar.setTag(tabList);
+                }
             }
         });
     }

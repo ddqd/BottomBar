@@ -123,6 +123,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     public void setClickHandler(ClickHandler clickHandler) {
+        bottomBarMODE = MODE_MANUAL;
         this.clickHandler = clickHandler;
     }
 
@@ -301,6 +302,10 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
         updateItems(bottomBarItems);
         updateTitleBottomPadding();
+
+        if (bottomBarMODE == MODE_AUTO) {
+            selectTabAtPosition(0);
+        }
     }
 
     private BottomBarTab.Config getTabConfig() {
