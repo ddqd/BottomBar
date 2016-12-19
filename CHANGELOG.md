@@ -2,6 +2,10 @@
 
 (or: y u no add shiny new things?!)
 
+### 2.1.5
+* Manual clickHandler ``` bottomBar.setClickHandler()```
+* Update default height
+
 ### 2.1.4
 * Build bar items from code:   ``` bottomBar.setItems(tabList);```
 

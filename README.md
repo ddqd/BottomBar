@@ -5,7 +5,7 @@
 
 <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/shy-demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/shifting-demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/graphics/screenshot_tablet.png" width="33%" />
 
-## Fork Version 2.1.4 released!
+## Fork Version 2.1.5 released!
 
 [Jitpack](https://jitpack.io/#ddqd/BottomBar/2.1.4)
 
@@ -19,7 +19,7 @@
 
 [How to contribute](https://github.com/roughike/BottomBar/blob/master/README.md#contributions)
 
-[Changelog](https://github.com/roughike/BottomBar/blob/master/CHANGELOG.md)
+[Changelog](https://github.com/ddqd/BottomBar/blob/master/CHANGELOG.md)
 
 ## What?
 
@@ -42,7 +42,7 @@ Your uncle Bob's Galaxy S Mini will probably be supported in the future though.
 	<dependency>
 	    <groupId>com.github.ddqd</groupId>
 	    <artifactId>BottomBar</artifactId>
-	    <version>2.1.4</version>
+	    <version>2.1.5</version>
 	</dependency>
 ```
 
