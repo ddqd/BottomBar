@@ -554,22 +554,23 @@ public class BottomBarTab extends LinearLayout {
     }
 
     @Override
-    public Parcelable onSaveInstanceState() {
+    protected Parcelable onSaveInstanceState() {
         if (badge != null) {
             Bundle bundle = badge.saveState(indexInContainer);
             bundle.putParcelable("superstate", super.onSaveInstanceState());
             return bundle;
         }
-
         return super.onSaveInstanceState();
     }
 
     @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        if (badge != null && state instanceof Bundle) {
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
-            badge.restoreState(bundle, indexInContainer);
-
+            int count = BottomBarBadge.restoreState(bundle, indexInContainer);
+            if (count != BottomBarBadge.DEFAULT_COUNT) {
+                setBadgeCount(count);
+            }
             state = bundle.getParcelable("superstate");
         }
         super.onRestoreInstanceState(state);

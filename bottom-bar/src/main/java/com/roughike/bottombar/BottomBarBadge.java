@@ -31,6 +31,9 @@ import android.widget.TextView;
  * limitations under the License.
  */
 class BottomBarBadge extends TextView {
+
+    public static final int DEFAULT_COUNT = -1;
+
     @VisibleForTesting
     static final String STATE_COUNT = "STATE_BADGE_COUNT_FOR_TAB_";
 
@@ -178,7 +181,7 @@ class BottomBarBadge extends TextView {
         return state;
     }
 
-    void restoreState(Bundle bundle, int tabIndex) {
-        setCount(bundle.getInt(STATE_COUNT + tabIndex, count));
+    public static int restoreState(Bundle bundle, int tabIndex) {
+        return bundle.getInt(STATE_COUNT + tabIndex, DEFAULT_COUNT);
     }
 }

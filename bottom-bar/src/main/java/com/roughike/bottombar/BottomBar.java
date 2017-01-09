@@ -716,7 +716,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     }
 
     @Override
-    public Parcelable onSaveInstanceState() {
+    protected Parcelable onSaveInstanceState() {
         Bundle bundle = saveState();
         bundle.putParcelable("superstate", super.onSaveInstanceState());
         return bundle;
@@ -726,7 +726,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     Bundle saveState() {
         Bundle outState = new Bundle();
         outState.putInt(STATE_CURRENT_SELECTED_TAB, currentTabPosition);
-
         return outState;
     }
 
