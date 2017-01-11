@@ -487,6 +487,8 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
      * @param position the position to select.
      */
     public void selectTabAtPosition(int position) {
+        if (position == POSITION_UNSELECT)
+            return;
         if (position > getTabCount() - 1 || position < 0) {
             throw new IndexOutOfBoundsException("Can't select tab at position " +
                     position + ". This BottomBar has no items at that position.");
