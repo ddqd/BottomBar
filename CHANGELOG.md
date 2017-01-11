@@ -2,6 +2,9 @@
 
 (or: y u no add shiny new things?!)
 
+### 2.1.8
+* update selectTabAtPosition
+
 ### 2.1.5
 * Manual clickHandler ``` bottomBar.setClickHandler()```
 * Update default height

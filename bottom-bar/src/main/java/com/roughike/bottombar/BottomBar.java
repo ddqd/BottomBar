@@ -74,7 +74,7 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
     private static final int BEHAVIOR_SHY = 2;
     private static final int BEHAVIOR_DRAW_UNDER_NAV = 4;
 
-    private static final int POSITION_UNSELECT = -1;
+    private static final int POSITION_UNSELECT = Integer.MAX_VALUE;
 
     private int primaryColor;
     private int screenWidth;
