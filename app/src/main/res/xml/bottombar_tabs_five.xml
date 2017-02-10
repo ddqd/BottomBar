@@ -2,7 +2,7 @@
 <tabs>
     <tab
         id="@+id/tab_recents"
-        icon="@drawable/ic_recents"
+        icon="@drawable/ic_feed_24dp"
         title="Recents" />
     <tab
         id="@+id/tab_favorites"
@@ -14,10 +14,10 @@
         title="Nearby" />
     <tab
         id="@+id/tab_friends"
-        icon="@drawable/ic_friends"
+        icon="@drawable/ic_feed_24dp"
         title="Friends" />
     <tab
         id="@+id/tab_food"
-        icon="@drawable/ic_restaurants"
+        icon="@drawable/ic_closed_group_24dp"
         title="Food" />
 </tabs>

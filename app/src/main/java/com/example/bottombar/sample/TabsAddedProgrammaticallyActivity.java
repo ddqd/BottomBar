@@ -26,7 +26,7 @@ public class TabsAddedProgrammaticallyActivity extends AppCompatActivity {
 
         BottomBarTab tab1 = new BottomBarTab(this);
         tab1.setTitle("One");
-        tab1.setIconResId(R.drawable.ic_favorites);
+        tab1.setIconResId(R.drawable.ic_closed_group_24dp);
         tab1.setId(R.id.tab_favorites);
 
         BottomBarTab tab2 = new BottomBarTab(this);
@@ -41,7 +41,7 @@ public class TabsAddedProgrammaticallyActivity extends AppCompatActivity {
 
         BottomBarTab tab4 = new BottomBarTab(this);
         tab4.setTitle("Four");
-        tab4.setIconResId(R.drawable.ic_recents);
+        tab4.setIconResId(R.drawable.ic_feed_24dp);
         tab4.setId(R.id.tab_recents);
 
         BottomBarTab tab5 = new BottomBarTab(this, "Five", R.drawable.ic_restaurants, R.id.tab_food);

@@ -16,7 +16,7 @@ public class ManualBarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_five_tabs);
+        setContentView(R.layout.activity_manual);
         final BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setClickHandler(new BottomBar.ClickHandler() {
             @Override

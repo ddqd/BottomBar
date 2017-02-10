@@ -30,7 +30,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.annotation.Retention;
@@ -244,7 +243,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         }
         outerContainer.setLayoutParams(params);
         setLayoutParams(params);
-
     }
 
     private void determineInitialBackgroundColor() {
@@ -301,7 +299,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         }
 
         updateItems(bottomBarItems);
-        updateTitleBottomPadding();
 
         if (bottomBarMODE == MODE_AUTO) {
             selectTabAtPosition(0);
@@ -633,7 +630,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
         super.onLayout(changed, left, top, right, bottom);
 
         if (changed) {
-            updateTitleBottomPadding();
 
             if (isShy()) {
                 initializeShyBehavior();
@@ -641,33 +637,6 @@ public class BottomBar extends LinearLayout implements View.OnClickListener, Vie
 
             if (drawUnderNav()) {
                 resizeForDrawingUnderNavbar();
-            }
-        }
-    }
-
-    private void updateTitleBottomPadding() {
-        if (tabContainer == null) {
-            return;
-        }
-
-        int childCount = getTabCount();
-
-        for (int i = 0; i < childCount; i++) {
-            View tab = tabContainer.getChildAt(i);
-            TextView title = (TextView) tab.findViewById(R.id.bb_bottom_bar_title);
-
-            if (title == null) {
-                continue;
-            }
-
-            int baseline = title.getBaseline();
-            int height = title.getHeight();
-            int paddingInsideTitle = height - baseline;
-            int missingPadding = tenDp - paddingInsideTitle;
-
-            if (missingPadding > 0) {
-                title.setPadding(title.getPaddingLeft(), title.getPaddingTop(),
-                        title.getPaddingRight(), missingPadding + title.getPaddingBottom());
             }
         }
     }
